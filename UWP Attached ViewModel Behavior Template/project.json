@@ -3,10 +3,11 @@
     "Ix-Main": "1.2.5",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0",
     "Microsoft.NETNative.Analyzer": "1.0.0",
-    "PlatformSpecific.Analyzer": "1.0.5",
+    "Microsoft.Xaml.Behaviors.Uwp.Managed": "1.0.3",
+    "PlatformSpecific.Analyzer": "2.0.2",
     "Prism.Unity": "6.1.1",
     "Prism.Windows": "6.0.1",
-    "ReactiveProperty": "2.2.8",
+    "ReactiveProperty": "2.3.0",
     "Rx-Main": "2.2.5",
     "Unity": "4.0.1"
   },
