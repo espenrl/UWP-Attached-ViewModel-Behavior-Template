@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Reactive.Disposables;
-using Prism.Windows.Mvvm;
 
 namespace UWPAttachedViewModelBehaviorTemplate
 {
-    public abstract class ViewModel<T> : ViewModelBase, IDisposable where T:ViewModel<T>
+    public abstract class ViewModel<T> : IViewModel where T : ViewModel<T>
     {
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
 

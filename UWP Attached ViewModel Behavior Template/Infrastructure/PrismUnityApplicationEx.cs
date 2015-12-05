@@ -8,7 +8,7 @@ namespace UWPAttachedViewModelBehaviorTemplate
 {
     public abstract class PrismUnityApplicationEx : PrismUnityApplication
     {
-        private readonly Dictionary<Type, Func<IUnityContainer>> _viewModels = new Dictionary<Type, Func<IUnityContainer>>();
+        private readonly Dictionary<Type, Func<IUnityContainer>> _viewModelConfigurators = new Dictionary<Type, Func<IUnityContainer>>();
 
         protected override void ConfigureViewModelLocator()
         {
@@ -17,30 +17,38 @@ namespace UWPAttachedViewModelBehaviorTemplate
             ViewModelLocationProvider.SetDefaultViewModelFactory(ViewModelFactory);
         }
 
-        protected void RegisterViewModelConfigurator<T>(Action<IUnityContainer> configuratorCallback)
+        protected void RegisterViewModelConfigurator<T>(Action<IUnityContainer> configuratorCallback) where T : ViewModel<T>
         {
-            _viewModels.Add(typeof(T), () =>
-            {
-                var childContainer = Container.CreateChildContainer();
-                childContainer.RegisterViewModel<T>();
-                configuratorCallback(childContainer);
+            _viewModelConfigurators.Add(typeof(T), () => CreateChildContainer<T>(configuratorCallback));
+        }
 
-                return childContainer;
-            });
+        private IUnityContainer CreateChildContainer<T>(Action<IUnityContainer> containerConfiguratorCallback)
+        {
+            var childContainer = Container.CreateChildContainer();
+            childContainer.RegisterViewModel<T>();
+            containerConfiguratorCallback(childContainer);
+
+            return childContainer;
         }
 
         private object ViewModelFactory(Type viewModelType)
         {
-            Func<IUnityContainer> configuratorCallback;
-            if (!_viewModels.TryGetValue(viewModelType, out configuratorCallback))
+            Func<IUnityContainer> containerConfiguratorCallback;
+            if (_viewModelConfigurators.TryGetValue(viewModelType, out containerConfiguratorCallback))
             {
-                // TODO: error message
-                throw new Exception();
+                var container = containerConfiguratorCallback();
+
+                var viewModel = container.Resolve(viewModelType) as IViewModel;
+                if (viewModel != null)
+                {
+                    viewModel.AddDisposable(container);
+                }
+
+                return viewModel;
             }
 
-            var container = configuratorCallback();
-
-            return container.Resolve(viewModelType);
+            // fallback to default
+            return Container.Resolve(viewModelType);
         }
     }
 }

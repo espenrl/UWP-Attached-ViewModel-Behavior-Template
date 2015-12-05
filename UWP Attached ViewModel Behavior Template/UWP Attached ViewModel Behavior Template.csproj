@@ -97,6 +97,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Extensions\UnityContainerExtensions.cs" />
+    <Compile Include="Infrastructure\IViewModel.cs" />
     <Compile Include="Infrastructure\IViewModelBehavior.cs" />
     <Compile Include="Infrastructure\ViewModelBehavior.cs" />
     <Compile Include="Infrastructure\ViewModel.cs" />

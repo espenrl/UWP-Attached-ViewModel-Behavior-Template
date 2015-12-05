@@ -2,7 +2,7 @@
 
 namespace UWPAttachedViewModelBehaviorTemplate
 {
-    public interface IViewModelBehavior<T> : IDisposable
+    public interface IViewModelBehavior<in T> : IDisposable
     {
         void Start(T viewModel);
     }

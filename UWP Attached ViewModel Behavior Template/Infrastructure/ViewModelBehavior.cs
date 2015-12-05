@@ -21,7 +21,7 @@ namespace UWPAttachedViewModelBehaviorTemplate
             
         }
 
-        public void AddDisposable(IDisposable disposable)
+        protected void AddDisposable(IDisposable disposable)
         {
             if (disposable == null) throw new ArgumentNullException(nameof(disposable));
             _disposables.Add(disposable);

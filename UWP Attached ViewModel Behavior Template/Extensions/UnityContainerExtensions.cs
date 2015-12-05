@@ -7,10 +7,10 @@ namespace UWPAttachedViewModelBehaviorTemplate
     {
         public static void RegisterViewModel<T>(this IUnityContainer container)
         {
-            // view model
+            // viewmodel
             container.RegisterType<T>(nameof(T));
 
-            // controller factory
+            // viewmodel behaviors factory
             container.RegisterType<Func<T, ViewModelBehaviorsController<T>>>(
                 new HierarchicalLifetimeManager(),
                 new InjectionFactory(c =>
