@@ -1,16 +1,14 @@
 ﻿using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
-using Microsoft.Practices.Unity;
-using Prism.Unity.Windows;
-using UWP_Attached_ViewModel_Behavior_Template.ViewModelBehaviors;
-using UWP_Attached_ViewModel_Behavior_Template.ViewModels;
+using UWPAttachedViewModelBehaviorTemplate.ViewModelBehaviors;
+using UWPAttachedViewModelBehaviorTemplate.ViewModels;
 
-namespace UWP_Attached_ViewModel_Behavior_Template
+namespace UWPAttachedViewModelBehaviorTemplate
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
-    sealed partial class App : PrismUnityApplication
+    sealed partial class App : PrismUnityApplicationEx
     {
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -24,18 +22,19 @@ namespace UWP_Attached_ViewModel_Behavior_Template
         protected override Task OnLaunchApplicationAsync(LaunchActivatedEventArgs args)
         {
             NavigationService.Navigate("Main", null);
+
             return Task.FromResult<object>(null);
         }
-
+  
         protected override void ConfigureContainer()
         {
             base.ConfigureContainer();
-            
-            // view models
-            RegisterTypeIfMissing(typeof(MainPageViewModel), typeof(MainPageViewModel), true);
 
-            // behaviors
-            Container.RegisterType<IMainPageViewModelBehavior, ShowTextBehavior>(nameof(ShowTextBehavior));
+            // MainPageViewModel
+            RegisterViewModelConfigurator<MainPageViewModel>(c =>
+            {
+                c.RegisterViewModelBehavior<MainPageViewModel, ShowTextBehavior>();
+            });
         }
     }
 }

@@ -1,8 +1,8 @@
-﻿<windows:PrismUnityApplication
-    x:Class="UWP_Attached_ViewModel_Behavior_Template.App"
+﻿<uwpAttachedViewModelBehaviorTemplate:PrismUnityApplicationEx
+    x:Class="UWPAttachedViewModelBehaviorTemplate.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:windows="using:Prism.Unity.Windows"
+    xmlns:uwpAttachedViewModelBehaviorTemplate="using:UWPAttachedViewModelBehaviorTemplate"
     RequestedTheme="Light">
 
-</windows:PrismUnityApplication>
+</uwpAttachedViewModelBehaviorTemplate:PrismUnityApplicationEx>

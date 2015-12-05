@@ -1,22 +1,19 @@
 ﻿using System;
 using Windows.UI.Popups;
-using UWP_Attached_ViewModel_Behavior_Template.ViewModels;
+using UWPAttachedViewModelBehaviorTemplate.ViewModels;
 
-namespace UWP_Attached_ViewModel_Behavior_Template.ViewModelBehaviors
+namespace UWPAttachedViewModelBehaviorTemplate.ViewModelBehaviors
 {
-    public class ShowTextBehavior : IMainPageViewModelBehavior
+    public class ShowTextBehavior : ViewModelBehavior<MainPageViewModel>
     {
-        private MainPageViewModel _vm;
-
-        public void Start(MainPageViewModel viewModel)
+        protected override void OnStart()
         {
-            _vm = viewModel;
-            viewModel.ShowTextCommand.Subscribe(_ => ShowMessageDialog());
+            AddDisposable(ViewModel.ShowTextCommand.Subscribe(_ => ShowMessageDialog()));
         }
 
         private async void ShowMessageDialog()
         {
-            var dialog = new MessageDialog(_vm.Text.Value);
+            var dialog = new MessageDialog(ViewModel.Text.Value);
             await dialog.ShowAsync();
         }
     }

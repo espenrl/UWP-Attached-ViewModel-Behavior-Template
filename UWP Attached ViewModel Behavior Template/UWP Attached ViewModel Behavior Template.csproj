@@ -7,8 +7,8 @@
     <ProjectGuid>{94F604F0-67BA-4683-AB7D-312F1AEDC19D}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UWP_Attached_ViewModel_Behavior_Template</RootNamespace>
-    <AssemblyName>UWP Attached ViewModel Behavior Template</AssemblyName>
+    <RootNamespace>UWPAttachedViewModelBehaviorTemplate</RootNamespace>
+    <AssemblyName>UWPAttachedViewModelBehaviorTemplate</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.10240.0</TargetPlatformVersion>
@@ -96,9 +96,14 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModelBehaviors\IViewModelBehavior.cs" />
+    <Compile Include="Extensions\UnityContainerExtensions.cs" />
+    <Compile Include="Infrastructure\IViewModelBehavior.cs" />
+    <Compile Include="Infrastructure\ViewModelBehavior.cs" />
+    <Compile Include="Infrastructure\ViewModel.cs" />
+    <Compile Include="Infrastructure\PrismUnityApplicationEx.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModelBehaviors\MainPageViewModel\ShowTextBehavior.cs" />
+    <Compile Include="Infrastructure\ViewModelBehaviorsController.cs" />
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

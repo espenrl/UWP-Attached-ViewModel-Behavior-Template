@@ -1,24 +1,16 @@
-﻿using System.Linq;
+﻿using System;
 using System.Reactive.Linq;
-using Prism.Windows.Mvvm;
 using Reactive.Bindings;
-using UWP_Attached_ViewModel_Behavior_Template.ViewModelBehaviors;
 
-namespace UWP_Attached_ViewModel_Behavior_Template.ViewModels
+namespace UWPAttachedViewModelBehaviorTemplate.ViewModels
 {
-    public interface IMainPageViewModelBehavior : IViewModelBehavior<MainPageViewModel> { }
-
-    public class MainPageViewModel : ViewModelBase
+    public class MainPageViewModel : ViewModel<MainPageViewModel>
     {
-        private readonly IMainPageViewModelBehavior[] _behaviors;
-
-        public MainPageViewModel(IMainPageViewModelBehavior[] behaviors)
+        public MainPageViewModel(Func<MainPageViewModel, ViewModelBehaviorsController<MainPageViewModel>> controllerFactory) : base(controllerFactory)
         {
             ShowTextCommand = Text.Select(str => !string.IsNullOrWhiteSpace(str)).ToReactiveCommand();
 
-            // initialize behaviors
-            _behaviors = behaviors;
-            _behaviors.ForEach(b => b.Start(this));
+            BehaviorsController.Start();
         }
 
         public ReactiveProperty<string> Text { get; } = new ReactiveProperty<string>();
