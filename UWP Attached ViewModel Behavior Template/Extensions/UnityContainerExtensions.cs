@@ -1,14 +1,15 @@
 ﻿using System;
+using JetBrains.Annotations;
 using Microsoft.Practices.Unity;
 
 namespace UWPAttachedViewModelBehaviorTemplate
 {
     public static class UnityContainerExtensions
     {
-        public static void RegisterViewModel<T>(this IUnityContainer container)
+        public static void RegisterViewModelWithBehaviors<T>([NotNull] this IUnityContainer container)
         {
             // viewmodel
-            container.RegisterType<T>(nameof(T));
+            container.RegisterType<T>();
 
             // viewmodel behaviors factory
             container.RegisterType<Func<T, ViewModelBehaviorsController<T>>>(
@@ -19,9 +20,9 @@ namespace UWPAttachedViewModelBehaviorTemplate
                             c.Resolve<ViewModelBehaviorsController<T>>(new DependencyOverride<T>(viewModel)))));
         }
 
-        public static void RegisterViewModelBehavior<TV, TB>(this IUnityContainer container) where TB: IViewModelBehavior<TV>
+        public static void RegisterViewModelBehavior<TV, TB>([NotNull] this IUnityContainer container) where TB: IViewModelBehavior<TV>
         {
-            container.RegisterType<IViewModelBehavior<TV>, TB>(nameof(TB));
+            container.RegisterType<IViewModelBehavior<TV>, TB>(typeof(TB).Name);
         }
     }
 }

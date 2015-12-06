@@ -1,5 +1,6 @@
 using System;
 using System.Reactive.Disposables;
+using JetBrains.Annotations;
 
 namespace UWPAttachedViewModelBehaviorTemplate
 {
@@ -9,9 +10,7 @@ namespace UWPAttachedViewModelBehaviorTemplate
         private readonly T _viewModel;
         private readonly IViewModelBehavior<T>[] _behaviors;
 
-        public ViewModelBehaviorsController(
-            T viewModel,
-            IViewModelBehavior<T>[] behaviors)
+        public ViewModelBehaviorsController([NotNull] T viewModel, [NotNull] IViewModelBehavior<T>[] behaviors)
         {
             _viewModel = viewModel;
             _behaviors = behaviors;

@@ -1,5 +1,6 @@
 using System;
 using System.Reactive.Disposables;
+using JetBrains.Annotations;
 
 namespace UWPAttachedViewModelBehaviorTemplate
 {
@@ -9,7 +10,7 @@ namespace UWPAttachedViewModelBehaviorTemplate
 
         protected T ViewModel;
 
-        public void Start(T viewModel)
+        public void Start([NotNull] T viewModel)
         {
             if (viewModel == null) throw new ArgumentNullException(nameof(viewModel));
             ViewModel = viewModel;
@@ -18,10 +19,9 @@ namespace UWPAttachedViewModelBehaviorTemplate
 
         protected virtual void OnStart()
         {
-            
         }
 
-        protected void AddDisposable(IDisposable disposable)
+        protected void AddDisposable([NotNull] IDisposable disposable)
         {
             if (disposable == null) throw new ArgumentNullException(nameof(disposable));
             _disposables.Add(disposable);

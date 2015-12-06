@@ -25,7 +25,7 @@ namespace UWPAttachedViewModelBehaviorTemplate
         private IUnityContainer CreateChildContainer<T>(Action<IUnityContainer> containerConfiguratorCallback)
         {
             var childContainer = Container.CreateChildContainer();
-            childContainer.RegisterViewModel<T>();
+            childContainer.RegisterViewModelWithBehaviors<T>();
             containerConfiguratorCallback(childContainer);
 
             return childContainer;
