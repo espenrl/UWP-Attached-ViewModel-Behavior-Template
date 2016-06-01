@@ -31,7 +31,7 @@ namespace UWPAttachedViewModelBehaviorTemplate
             base.ConfigureContainer();
 
             // MainPageViewModel
-            RegisterViewModelConfigurator<MainPageViewModel>(c =>
+            RegisterViewModelContainerConfigurator<MainPageViewModel>(c =>
             {
                 c.RegisterViewModelBehavior<MainPageViewModel, ShowTextBehavior>();
             });

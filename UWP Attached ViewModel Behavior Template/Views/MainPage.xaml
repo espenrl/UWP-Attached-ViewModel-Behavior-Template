@@ -8,14 +8,16 @@
     mc:Ignorable="d"
     mvvm:ViewModelLocator.AutoWireViewModel="true">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBox Grid.Row="0" Text="{Binding Text.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <Button Grid.Row="1" Content="Show me the text" Command="{x:Bind ViewModel.ShowTextCommand}" />
+        <TextBox Grid.Column="0" Width="200" Text="{Binding Text.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <Button Grid.Column="1" Margin="10,0,0,0" Content="Show me the text" Command="{x:Bind ViewModel.ShowTextCommand}" />
     </Grid>
 </Page>
