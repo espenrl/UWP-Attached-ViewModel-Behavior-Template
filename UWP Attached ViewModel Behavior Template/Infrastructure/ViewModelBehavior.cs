@@ -31,10 +31,10 @@ namespace UWPAttachedViewModelBehaviorTemplate
         protected virtual void OnStart() {}
 
         /// <summary>
-        /// Adds disposable object that will be disposed when disposing the viewmodel.
+        /// Register a disposable object. The registered object will be disposed when disposing the viewmodel behavior.
         /// </summary>
         /// <param name="disposable">The disposable object.</param>
-        protected void AddDisposable([NotNull] IDisposable disposable)
+        public void RegisterDisposable([NotNull] IDisposable disposable)
         {
             if (disposable == null) throw new ArgumentNullException(nameof(disposable));
 
@@ -42,7 +42,7 @@ namespace UWPAttachedViewModelBehaviorTemplate
         }
 
         /// <summary>
-        /// Releases all disposable objects registered with AddDisposable method.
+        /// Releases all disposable objects registered with RegisterDisposable method.
         /// </summary>
         public virtual void Dispose()
         {

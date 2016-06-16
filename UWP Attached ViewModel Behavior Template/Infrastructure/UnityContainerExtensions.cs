@@ -28,21 +28,5 @@ namespace UWPAttachedViewModelBehaviorTemplate
                         viewModel =>
                             c.Resolve<ViewModelBehaviorsController<T>>(new DependencyOverride<T>(viewModel)))));
         }
-
-        /// <summary>
-        /// Registers the viewmodel behavior with the container.
-        /// </summary>
-        /// <typeparam name="TViewModel">The type of the viewmodel.</typeparam>
-        /// <typeparam name="TBehavior">The type of the behavior.</typeparam>
-        /// <param name="container">The container.</param>
-        /// <seealso cref="ViewModel{T}" />
-        /// <seealso cref="ViewModelBehavior{T}" />
-        public static void RegisterViewModelBehavior<TViewModel, TBehavior>([NotNull] this IUnityContainer container)
-            where TBehavior: IViewModelBehavior<TViewModel>
-        {
-            if (container == null) throw new ArgumentNullException(nameof(container));
-
-            container.RegisterType<IViewModelBehavior<TViewModel>, TBehavior>(typeof(TBehavior).Name);
-        }
     }
 }

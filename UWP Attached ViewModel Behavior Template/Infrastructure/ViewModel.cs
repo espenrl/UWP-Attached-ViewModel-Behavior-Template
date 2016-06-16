@@ -6,12 +6,12 @@ using Prism.Windows.Mvvm;
 namespace UWPAttachedViewModelBehaviorTemplate
 {
     /// <summary>
-    /// Extends Prism ViewModelBase with behaviors support, DI behaviors resolution and disposable objects support.
+    /// Extends Prism ViewModelBase with behaviors support, DI resolution of behaviors and registered object dispose.
     /// </summary>
     /// <typeparam name="TViewModel">Viewmodel</typeparam>
     /// <seealso cref="ViewModelBase" />
-    /// <seealso cref="IViewModel" />
-    public abstract class ViewModel<TViewModel> : ViewModelBase, IViewModel
+    /// <seealso cref="IDisposableList" />
+    public abstract class ViewModel<TViewModel> : ViewModelBase, IDisposableList
         where TViewModel : ViewModel<TViewModel> // TViewModel should be the derived viewmodel class - needed for DI resolution of behaviors controller
     {
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
@@ -25,20 +25,20 @@ namespace UWPAttachedViewModelBehaviorTemplate
             // instantiate behaviors controller
             var viewModel = (TViewModel) this;
             BehaviorsController = behaviorsControllerFactory(viewModel);
-            AddDisposable(BehaviorsController);
+            RegisterDisposable(BehaviorsController);
         }
 
         /// <summary>
-        /// Adds disposable object that will be disposed when disposing the viewmodel.
+        /// Register a disposable object. The registered object will be disposed when disposing the viewmodel.
         /// </summary>
         /// <param name="disposable">The disposable object.</param>
-        public void AddDisposable(IDisposable disposable)
+        public void RegisterDisposable(IDisposable disposable)
         {
             _disposables.Add(disposable);
         }
 
         /// <summary>
-        /// Releases all disposable objects registered with AddDisposable method.
+        /// Releases all disposable objects registered with RegisterDisposable method.
         /// </summary>
         public virtual void Dispose()
         {

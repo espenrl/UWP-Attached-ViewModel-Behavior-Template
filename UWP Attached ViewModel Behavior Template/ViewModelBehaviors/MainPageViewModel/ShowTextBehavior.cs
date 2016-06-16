@@ -11,7 +11,7 @@ namespace UWPAttachedViewModelBehaviorTemplate.ViewModelBehaviors
         protected override void OnStart()
         {
             // subscribe to command - add subscription to dispose list
-            AddDisposable(ViewModel.ShowTextCommand.Subscribe(_ => ShowMessageDialog()));
+            RegisterDisposable(ViewModel.ShowTextCommand.Subscribe(_ => ShowMessageDialog()));
         }
 
         private async void ShowMessageDialog()

@@ -46,7 +46,7 @@ public class ShowTextBehavior : ViewModelBehavior<MainPageViewModel>
 	protected override void OnStart()
 	{
 		// subscribe to command - add subscription to dispose list
-		AddDisposable(ViewModel.ShowTextCommand.Subscribe(_ => ShowMessageDialog()));
+		RegisterDisposable(ViewModel.ShowTextCommand.Subscribe(_ => ShowMessageDialog()));
 	}
 
 	private async void ShowMessageDialog()
@@ -62,11 +62,21 @@ public class ShowTextBehavior : ViewModelBehavior<MainPageViewModel>
 ```csharp
 protected override void ConfigureContainer()
 {
-	// MainPageViewModel
-	RegisterViewModelContainerConfigurator<MainPageViewModel>(c =>
-	{
-		c.RegisterViewModelBehavior<MainPageViewModel, ShowTextBehavior>();
-	});
+	base.ConfigureContainer(); // must be called to initialize PRISM
+
+    /* ### container configurator:
+     * on request of page (PRISM)
+     * -> create viewmodel container / child container
+     * -> run the container configurator
+     * -> resolve viewmodel, viewmodel behaviors and all other registered dependencies
+     * -> viewmodel returned to PRISM
+     */
+    RegisterViewModelContainerConfigurator<MainPageViewModel>(c =>
+    {
+        c.RegisterViewModelBehavior<ShowTextBehavior>(); // generics guarantee only behaviors for MainPageViewModel can be registered
+
+        // c.ViewModelContainer: reference to the viewmodel container - do custom registrations here
+    });
 }
 ```
 

@@ -24,20 +24,23 @@ namespace UWPAttachedViewModelBehaviorTemplate
         }
 
         /// <summary>
-        /// Registers the viewmodel container configurator. Use for registering behaviors with container as well as other DI objects.
+        /// Registers the viewmodel container configurator. Use for registering behaviors with container as well as custom registrations.
         /// </summary>
         /// <typeparam name="TViewModel">The type of the viewmodel.</typeparam>
         /// <param name="viewModelContainerConfiguratorCallback">The viewmodel container configurator callback.</param>
         /// <exception cref="ArgumentNullException"></exception>
-        protected void RegisterViewModelContainerConfigurator<TViewModel>([NotNull] Action<IUnityContainer> viewModelContainerConfiguratorCallback)
+        protected void RegisterViewModelContainerConfigurator<TViewModel>([NotNull] Action<ViewModelContainerReference<TViewModel>> viewModelContainerConfiguratorCallback)
             where TViewModel : ViewModel<TViewModel>
         {
-            if (viewModelContainerConfiguratorCallback == null) throw new ArgumentNullException(nameof(viewModelContainerConfiguratorCallback));
+            if (viewModelContainerConfiguratorCallback == null)
+            {
+                throw new ArgumentNullException(nameof(viewModelContainerConfiguratorCallback));
+            }
 
             // function for creating a viewmodel container - this line removes dependency on generic type
             Func<IUnityContainer> createViewModelContainerFunc = () => CreateViewModelContainer<TViewModel>(Container, viewModelContainerConfiguratorCallback);
 
-            // add to dictionary - map on typeof(TViewModel)
+            // add to lookup - map on typeof(TViewModel)
             _createViewModelContainerFuncMap.Add(typeof(TViewModel), createViewModelContainerFunc);
         }
 
@@ -45,32 +48,34 @@ namespace UWPAttachedViewModelBehaviorTemplate
         {
             // try get viewmodel container func (for creation of container on request)
             Func<IUnityContainer> createViewModelContainerFunc;
-            if (_createViewModelContainerFuncMap.TryGetValue(viewModelType, out createViewModelContainerFunc))
+            var viewModelTypeHasRegistration = _createViewModelContainerFuncMap.TryGetValue(viewModelType, out createViewModelContainerFunc);
+
+            if (viewModelTypeHasRegistration)
             {
                 // instantiate viewmodel container
                 var container = createViewModelContainerFunc();
 
                 // get viewmodel from container
-                var viewModel = container.Resolve(viewModelType) as IViewModel;
-                viewModel?.AddDisposable(container);
+                var viewModel = container.Resolve(viewModelType) as IDisposableList;
+                viewModel?.RegisterDisposable(container);
 
                 return viewModel;
             }
 
-            // fallback to default resolution
+            // no registration for viewModelType found -> fallback to default resolution from main container
             return Container.Resolve(viewModelType);
         }
 
-        private static IUnityContainer CreateViewModelContainer<T>(IUnityContainer parentContainer, Action<IUnityContainer> viewModelContainerConfiguratorCallback)
+        private static IUnityContainer CreateViewModelContainer<TViewModel>(IUnityContainer parentContainer, Action<ViewModelContainerReference<TViewModel>> viewModelContainerConfiguratorCallback)
         {
             // create child container for viewmodel
             var childContainer = parentContainer.CreateChildContainer();
 
-            // register viewmodel and behaviors controller
-            childContainer.RegisterViewModelAndBehaviorsControllerFactory<T>();
+            // register viewmodel and controller (viewmodel behaviors controller)
+            childContainer.RegisterViewModelAndBehaviorsControllerFactory<TViewModel>();
 
-            // run callback which should register behaviors and other DI objects with child container (viewmodel container)
-            viewModelContainerConfiguratorCallback(childContainer);
+            // run callback which should register behaviors and custom registrations with viewmodel container / child container
+            viewModelContainerConfiguratorCallback(new ViewModelContainerReference<TViewModel>(childContainer));
 
             return childContainer;
         }

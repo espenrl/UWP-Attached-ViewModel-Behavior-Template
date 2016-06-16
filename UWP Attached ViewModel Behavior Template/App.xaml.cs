@@ -10,30 +10,33 @@ namespace UWPAttachedViewModelBehaviorTemplate
     /// </summary>
     sealed partial class App : PrismUnityApplicationEx
     {
-        /// <summary>
-        /// Initializes the singleton application object.  This is the first line of authored code
-        /// executed, and as such is the logical equivalent of main() or WinMain().
-        /// </summary>
         public App()
         {
             InitializeComponent();
         }
 
-        protected override Task OnLaunchApplicationAsync(LaunchActivatedEventArgs args)
+        protected override async Task OnLaunchApplicationAsync(LaunchActivatedEventArgs args)
         {
+            // navigate to MainPage (start page)
             NavigationService.Navigate("Main", null);
-
-            return Task.FromResult<object>(null);
         }
   
         protected override void ConfigureContainer()
         {
-            base.ConfigureContainer();
+            base.ConfigureContainer(); // must be called to initialize PRISM
 
-            // MainPageViewModel
+            /* ### container configurator:
+             * on request of page (PRISM)
+             * -> create viewmodel container / child container
+             * -> run the container configurator
+             * -> resolve viewmodel, viewmodel behaviors and all other registered dependencies
+             * -> viewmodel returned to PRISM
+             */
             RegisterViewModelContainerConfigurator<MainPageViewModel>(c =>
             {
-                c.RegisterViewModelBehavior<MainPageViewModel, ShowTextBehavior>();
+                c.RegisterViewModelBehavior<ShowTextBehavior>(); // generics guarantee only behaviors for MainPageViewModel can be registered
+
+                // c.ViewModelContainer: reference to the viewmodel container - do custom registrations here
             });
         }
     }

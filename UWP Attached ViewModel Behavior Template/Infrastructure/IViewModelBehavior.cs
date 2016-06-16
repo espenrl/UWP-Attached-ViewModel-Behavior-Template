@@ -7,8 +7,8 @@ namespace UWPAttachedViewModelBehaviorTemplate
     /// Surface contract for a viewmodel behavior.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <seealso cref="IDisposable" />
-    public interface IViewModelBehavior<in T> : IDisposable
+    /// <seealso cref="IDisposableList" />
+    public interface IViewModelBehavior<in T> : IDisposableList
     {
         /// <summary>
         /// Start point of a behavior for determistic start.
